@@ -38,6 +38,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FArenaInputActionConfig> NativeInputActions;
 
-	UInputAction* FindNativeActionByTag(const FGameplayTag& InInputTag);
+	UInputAction* FindNativeActionByTag(const FGameplayTag& InInputTag) const;
 
 };
