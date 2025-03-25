@@ -8,6 +8,8 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UDataAsset_InputConfig;
+struct FInputActionValue;
 
 /**
  * 
@@ -21,6 +23,7 @@ public:
     AArPlayerCharacter();
 
 protected:
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
     virtual void BeginPlay() override;
 
 private:
@@ -34,4 +37,14 @@ private:
     UCameraComponent* FollowCamera;
 
 #pragma endregion
+
+#pragma region Inputs
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData", meta = (AllowPrivateAccess = "true"))
+    UDataAsset_InputConfig* InputConfigDataAsset;
+
+    void Input_Move(const FInputActionValue& InputActionValue);
+    void Input_Look(const FInputActionValue& InputActionValue);
+    
+#pragma endregion
+
 };
