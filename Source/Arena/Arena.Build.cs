@@ -13,7 +13,8 @@ public class Arena : ModuleRules
 			"Engine",
 			"InputCore",
 			"GameplayTags",
-            "EnhancedInput"});
+            "EnhancedInput",
+            "GameplayTasks"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

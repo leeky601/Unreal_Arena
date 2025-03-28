@@ -10,6 +10,8 @@
 #include "DataAssets/Input/DataAsset_InputConfig.h"
 #include "Components/Input/ArenaInputComponent.h"
 #include "ArenaGameplayTags.h"
+#include "AbilitySystem/ArAbilitySystemComponent.h"
+#include "AbilitySystem/ArAttributeSet.h"
 
 #include "DebugHelper.h"
 
@@ -38,6 +40,19 @@ AArPlayerCharacter::AArPlayerCharacter()
     GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 }
 
+void AArPlayerCharacter::PossessedBy(AController* NewController)
+{
+    Super::PossessedBy(NewController);
+
+    if (ArAbilitySystemComponent && ArAttributeSet)
+    {
+        const FString ASCText = FString::Printf(TEXT("Owner Actor: %s, Avatar Acotr: %s"), *ArAbilitySystemComponent->GetOwnerActor()->GetActorLabel(), *ArAbilitySystemComponent->GetAvatarActor()->GetActorLabel());
+
+        Debug::Print(TEXT("Ability system component valid. ") + ASCText, FColor::Green);
+        Debug::Print(TEXT("AttributeSet valid. "), FColor::Green);
+    }
+}
+
 void AArPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     checkf(InputConfigDataAsset, TEXT("Forgot to assign a valid data asset as input config"));
@@ -60,7 +75,6 @@ void AArPlayerCharacter::BeginPlay()
 {
     Super::BeginPlay();
 
-    Debug::Print(TEXT("Working"));
 }
 
 void AArPlayerCharacter::Input_Move(const FInputActionValue& InputActionValue)

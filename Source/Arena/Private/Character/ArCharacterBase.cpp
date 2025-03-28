@@ -2,6 +2,8 @@
 
 
 #include "Character/ArCharacterBase.h"
+#include "AbilitySystem/ArAbilitySystemComponent.h"
+#include "AbilitySystem/ArAttributeSet.h"
 
 // Sets default values
 AArCharacterBase::AArCharacterBase()
@@ -12,6 +14,24 @@ AArCharacterBase::AArCharacterBase()
 
     GetMesh()->bReceivesDecals = false;
 
+    ArAbilitySystemComponent = CreateDefaultSubobject<UArAbilitySystemComponent>(TEXT("ArAbilitySystemComponent"));
+
+    ArAttributeSet = CreateDefaultSubobject<UArAttributeSet>(TEXT("ArAttributeSet"));
+}
+
+UAbilitySystemComponent* AArCharacterBase::GetAbilitySystemComponent() const
+{
+    return GetArAbilitySystemComponent();
+}
+
+void AArCharacterBase::PossessedBy(AController* NewController)
+{
+    Super::PossessedBy(NewController);
+
+    if (ArAbilitySystemComponent)
+    {
+        ArAbilitySystemComponent->InitAbilityActorInfo(this, this);
+    }
 }
 
 
