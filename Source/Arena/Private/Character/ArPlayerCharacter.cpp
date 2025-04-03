@@ -12,6 +12,7 @@
 #include "ArenaGameplayTags.h"
 #include "AbilitySystem/ArAbilitySystemComponent.h"
 #include "AbilitySystem/ArAttributeSet.h"
+#include "DataAssets/StartUpData/DataAsset_PlayerStartUpData.h"
 
 #include "DebugHelper.h"
 
@@ -44,12 +45,12 @@ void AArPlayerCharacter::PossessedBy(AController* NewController)
 {
     Super::PossessedBy(NewController);
 
-    if (ArAbilitySystemComponent && ArAttributeSet)
+    if (!CharacterStartUpData.IsNull())
     {
-        const FString ASCText = FString::Printf(TEXT("Owner Actor: %s, Avatar Acotr: %s"), *ArAbilitySystemComponent->GetOwnerActor()->GetActorLabel(), *ArAbilitySystemComponent->GetAvatarActor()->GetActorLabel());
-
-        Debug::Print(TEXT("Ability system component valid. ") + ASCText, FColor::Green);
-        Debug::Print(TEXT("AttributeSet valid. "), FColor::Green);
+        if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.LoadSynchronous())
+        {
+            LoadedData->GiveToAbilitySystemComponent(ArAbilitySystemComponent);
+        }
     }
 }
 

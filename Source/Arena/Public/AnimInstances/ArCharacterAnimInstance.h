@@ -18,7 +18,7 @@ class ARENA_API UArCharacterAnimInstance : public UArBaseAnimInstance
 	
 protected:
 	virtual void NativeInitializeAnimation() override;
-	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds);
+	virtual void NativeThreadSafeUpdateAnimation(float DeltaSeconds) override;
 
 protected:
 	UPROPERTY()

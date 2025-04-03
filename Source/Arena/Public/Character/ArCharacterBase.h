@@ -9,6 +9,7 @@
 
 class UArAbilitySystemComponent;
 class UArAttributeSet;
+class UDataAsset_StartUpDataBase;
 
 UCLASS()
 class ARENA_API AArCharacterBase : public ACharacter, public IAbilitySystemInterface
@@ -20,7 +21,7 @@ public:
 	AArCharacterBase();
 
 	//~ Begin IAbilitySystemInterface Interface.
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const;
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//~ End IAbilitySystemInterface Interface
 protected:
 
@@ -33,6 +34,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AbilitySystem")
 	UArAttributeSet* ArAttributeSet;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
+	TSoftObjectPtr<UDataAsset_StartUpDataBase> CharacterStartUpData;
 
 	FORCEINLINE UArAbilitySystemComponent* GetArAbilitySystemComponent() const {return ArAbilitySystemComponent;}
 

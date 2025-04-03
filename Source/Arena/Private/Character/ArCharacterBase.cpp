@@ -31,6 +31,8 @@ void AArCharacterBase::PossessedBy(AController* NewController)
     if (ArAbilitySystemComponent)
     {
         ArAbilitySystemComponent->InitAbilityActorInfo(this, this);
+
+        ensureMsgf(!CharacterStartUpData.IsNull(), TEXT("Forgot to assign start up data to %s"), *GetName());
     }
 }
 
