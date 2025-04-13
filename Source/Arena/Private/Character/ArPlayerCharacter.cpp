@@ -13,6 +13,7 @@
 #include "AbilitySystem/ArAbilitySystemComponent.h"
 #include "AbilitySystem/ArAttributeSet.h"
 #include "DataAssets/StartUpData/DataAsset_PlayerStartUpData.h"
+#include "Components/Combat/PlayerCombatComponent.h"
 
 #include "DebugHelper.h"
 
@@ -39,6 +40,8 @@ AArPlayerCharacter::AArPlayerCharacter()
     GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
     GetCharacterMovement()->MaxWalkSpeed = 400.f;
     GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+
+    PlayerCombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("PlayerCombatComponent"));
 }
 
 void AArPlayerCharacter::PossessedBy(AController* NewController)
