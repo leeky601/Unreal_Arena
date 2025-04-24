@@ -3,3 +3,18 @@
 
 #include "AbilitySystem/ArAbilitySystemComponent.h"
 
+void UArAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)) continue;
+
+		TryActivateAbility(AbilitySpec.Handle);
+	}
+}
+
+void UArAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InputTag)
+{
+}

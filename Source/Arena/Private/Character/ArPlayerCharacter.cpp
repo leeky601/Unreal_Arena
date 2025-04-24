@@ -73,6 +73,8 @@ void AArPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
     ArenaInputComponent->BindNativeInputAction(InputConfigDataAsset, ArenaGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
     ArenaInputComponent->BindNativeInputAction(InputConfigDataAsset, ArenaGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
+
+    ArenaInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 
 void AArPlayerCharacter::BeginPlay()
@@ -116,3 +118,15 @@ void AArPlayerCharacter::Input_Look(const FInputActionValue& InputActionValue)
         AddControllerPitchInput(LookAxisVector.Y);
     }
 }
+
+void AArPlayerCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)
+{
+    ArAbilitySystemComponent->OnAbilityInputPressed(InInputTag);
+}
+
+void AArPlayerCharacter::Input_AbilityInputReleased(FGameplayTag InInputTag)
+{
+    ArAbilitySystemComponent->OnAbilityInputReleased(InInputTag);
+}
+
+

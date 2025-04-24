@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Character/ArCharacterBase.h"
+#include "GameplayTagContainer.h"
 #include "ArPlayerCharacter.generated.h"
 
 class USpringArmComponent;
@@ -51,7 +52,12 @@ private:
 
     void Input_Move(const FInputActionValue& InputActionValue);
     void Input_Look(const FInputActionValue& InputActionValue);
+
+    void Input_AbilityInputPressed(FGameplayTag InInputTag);
+    void Input_AbilityInputReleased(FGameplayTag InInputTag);
     
 #pragma endregion
 
+public:
+    FORCEINLINE UPlayerCombatComponent* GetPlayerCombatComponent() const { return PlayerCombatComponent; }
 };

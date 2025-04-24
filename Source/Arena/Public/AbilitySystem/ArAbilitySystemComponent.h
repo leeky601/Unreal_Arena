@@ -14,4 +14,7 @@ class ARENA_API UArAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
 	
+public:
+	void OnAbilityInputPressed(const FGameplayTag& InputTag);
+	void OnAbilityInputReleased(const FGameplayTag& InputTag);
 };
