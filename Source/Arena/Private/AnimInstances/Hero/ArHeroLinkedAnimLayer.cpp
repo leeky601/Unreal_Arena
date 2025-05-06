@@ -2,4 +2,9 @@
 
 
 #include "AnimInstances/Hero/ArHeroLinkedAnimLayer.h"
+#include "AnimInstances/Hero/ArHeroAnimInstance.h"
 
+UArHeroAnimInstance* UArHeroLinkedAnimLayer::GetPlayerAnimInstance() const
+{
+	return Cast<UArHeroAnimInstance>(GetOwningComponent()->GetAnimInstance());
+}

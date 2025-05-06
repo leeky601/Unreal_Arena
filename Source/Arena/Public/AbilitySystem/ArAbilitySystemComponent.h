@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+#include "ArenaTypes/ArenaStructTypes.h"
 #include "ArAbilitySystemComponent.generated.h"
 
 /**
@@ -17,4 +18,10 @@ class ARENA_API UArAbilitySystemComponent : public UAbilitySystemComponent
 public:
 	void OnAbilityInputPressed(const FGameplayTag& InputTag);
 	void OnAbilityInputReleased(const FGameplayTag& InputTag);
+
+	UFUNCTION(BlueprintCallable, Category = "Arena|Ability", meta = (ApplyLevel = "1"))
+	void GrantPlayerWeaponAbilities(const TArray<FArenaPlayerAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles);
+
+	UFUNCTION(BlueprintCallable, Category = "Arena|Ability", meta = (ApplyLevel = "1"))
+	void RemoveGrantedPlayerWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove);
 };

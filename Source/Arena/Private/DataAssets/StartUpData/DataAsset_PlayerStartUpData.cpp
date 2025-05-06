@@ -22,7 +22,4 @@ void UDataAsset_PlayerStartUpData::GiveToAbilitySystemComponent(UArAbilitySystem
 	}
 }
 
-bool FArenaPlayerAbilitySet::IsValid() const
-{
-	return InputTag.IsValid() && AbilityToGrant;
-}
+

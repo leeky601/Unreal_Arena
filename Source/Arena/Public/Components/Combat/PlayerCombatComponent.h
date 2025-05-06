@@ -6,6 +6,7 @@
 #include "Components/Combat/PawnCombatComponent.h"
 #include "PlayerCombatComponent.generated.h"
 
+class AArPlayerWeapon;
 /**
  * 
  */
@@ -14,4 +15,7 @@ class ARENA_API UPlayerCombatComponent : public UPawnCombatComponent
 {
 	GENERATED_BODY()
 	
+public:
+	UFUNCTION(BlueprintCallable, Category = "Arena|Combat")
+	AArPlayerWeapon* GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
 };
