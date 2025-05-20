@@ -2,7 +2,7 @@
 
 
 #include "ArenaTypes/ArenaStructTypes.h"
-#include "AbilitySystem/Abilities/ArGameplayAbility.h"
+#include "AbilitySystem/Abilities/ArPlayerGameplayAbility.h"
 
 bool FArenaPlayerAbilitySet::IsValid() const
 {

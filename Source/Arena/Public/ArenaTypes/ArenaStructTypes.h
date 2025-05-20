@@ -6,7 +6,7 @@
 #include "ArenaStructTypes.generated.h"
 
 class UArHeroLinkedAnimLayer;
-class UArGameplayAbility;
+class UArPlayerGameplayAbility;
 class UInputMappingContext;
 
 USTRUCT(BlueprintType)
@@ -19,7 +19,7 @@ struct FArenaPlayerAbilitySet
 	FGameplayTag InputTag;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<UArGameplayAbility> AbilityToGrant;
+	TSubclassOf<UArPlayerGameplayAbility> AbilityToGrant;
 
 	bool IsValid() const;
 };

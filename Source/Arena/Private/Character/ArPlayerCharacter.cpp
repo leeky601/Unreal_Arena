@@ -44,6 +44,11 @@ AArPlayerCharacter::AArPlayerCharacter()
     PlayerCombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("PlayerCombatComponent"));
 }
 
+UPawnCombatComponent* AArPlayerCharacter::GetPawnCombatComponent() const
+{
+    return PlayerCombatComponent;
+}
+
 void AArPlayerCharacter::PossessedBy(AController* NewController)
 {
     Super::PossessedBy(NewController);

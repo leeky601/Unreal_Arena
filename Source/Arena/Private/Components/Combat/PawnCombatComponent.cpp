@@ -3,6 +3,7 @@
 
 #include "Components/Combat/PawnCombatComponent.h"
 #include "Items/Wepons/ArWeaponBase.h"
+#include "Components/BoxComponent.h"
 
 #include "DebugHelper.h"
 void UPawnCombatComponent::RegisterSpawnWeapon(FGameplayTag InWeaponTagToRegister, AArWeaponBase* InWeaponToRegister, bool bRegisterAsEquippedWeappon)
@@ -12,14 +13,13 @@ void UPawnCombatComponent::RegisterSpawnWeapon(FGameplayTag InWeaponTagToRegiste
 
 	CharacterCarriedWeaponMap.Emplace(InWeaponTagToRegister, InWeaponToRegister);
 
+	InWeaponToRegister->OnWeaponHitTarget.BindUObject(this, &ThisClass::OnHitTargetActor);
+	InWeaponToRegister->OnWeaponPulledFromTarget.BindUObject(this, &ThisClass::OnWeaponPulledFromTargetActor);
+
 	if (bRegisterAsEquippedWeappon)
 	{
 		CurrentEquippedWeaponTag = InWeaponTagToRegister;
 	}
-
-	const FString WeaponString = FString::Printf(TEXT("A Weapon named: %s has been registered using the tag %s"), *InWeaponToRegister->GetName(), *InWeaponTagToRegister.ToString());
-
-	Debug::Print(WeaponString);
 }
 
 AArWeaponBase* UPawnCombatComponent::GetCharacterCarriedWeaponByTag(FGameplayTag InWeaponTagToGet) const
@@ -43,4 +43,35 @@ AArWeaponBase* UPawnCombatComponent::GetCharacterCurrentEquippedWeapon() const
 	}
 	
 	return GetCharacterCarriedWeaponByTag(CurrentEquippedWeaponTag);
+}
+
+void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType)
+{
+	if (ToggleDamageType == EToggleDamageType::CurrentEquipedWeapon)
+	{
+		AArWeaponBase* WeaponToToggleCollison = GetCharacterCurrentEquippedWeapon();
+
+		check(WeaponToToggleCollison);
+
+		if (bShouldEnable)
+		{
+			WeaponToToggleCollison->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		}
+		else
+		{
+			WeaponToToggleCollison->GetWeaponCollisionBox()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+			OverlappedActors.Empty();
+		}
+	}
+
+	//Hand Collision
+}
+
+void UPawnCombatComponent::OnHitTargetActor(AActor* TargetActor)
+{
+}
+
+void UPawnCombatComponent::OnWeaponPulledFromTargetActor(AActor* TargetActor)
+{
 }

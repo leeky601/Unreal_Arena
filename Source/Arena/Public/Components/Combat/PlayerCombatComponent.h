@@ -18,4 +18,7 @@ class ARENA_API UPlayerCombatComponent : public UPawnCombatComponent
 public:
 	UFUNCTION(BlueprintCallable, Category = "Arena|Combat")
 	AArPlayerWeapon* GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
+
+	virtual void OnHitTargetActor(AActor* TargetActor) override;
+	virtual void OnWeaponPulledFromTargetActor(AActor* TargetActor) override;
 };

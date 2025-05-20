@@ -24,6 +24,10 @@ class ARENA_API AArPlayerCharacter : public AArCharacterBase
 public:
     AArPlayerCharacter();
 
+    //~ Begin IPawnCombatInterface Interface.
+    virtual UPawnCombatComponent* GetPawnCombatComponent() const override;
+    //~ End IPawnCombatInterface Interface
+
 protected:
     //~ Begin APawn Interface.
     virtual void PossessedBy(AController* NewController) override;
