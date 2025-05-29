@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "ArenaTypes/ArenaEnumTypes.h"
 #include "ArGameplayAbility.generated.h"
 
 class UPawnCombatComponent;
@@ -38,4 +39,8 @@ protected:
 	UFUNCTION(BlueprintPure, Category = "Arena|Ability")
 	UArAbilitySystemComponent* GetArAbilitySystemComponentFromActorInfo() const;
 
+	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle);
+
+	UFUNCTION(BlueprintCallable, Category = "Arena|Ability", meta = (DisplayName = "Apply Effect Spec Handle To Target", ExpandEnumAsExecs = "OutSuccessType"))
+	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, EArSuccessType& OutSuccessType);
 };

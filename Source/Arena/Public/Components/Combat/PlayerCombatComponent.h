@@ -19,6 +19,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Arena|Combat")
 	AArPlayerWeapon* GetPlayerCarriedWeaponByTag(FGameplayTag InWeaponTag) const;
 
+	UFUNCTION(BlueprintCallable, Category = "Arena|Combat")
+	AArPlayerWeapon* GetPlayerCurrentEquippedWeapon() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Arena|Combat")
+	float GetWeaponDamage(float Inlevel) const;
+
 	virtual void OnHitTargetActor(AActor* TargetActor) override;
 	virtual void OnWeaponPulledFromTargetActor(AActor* TargetActor) override;
 };

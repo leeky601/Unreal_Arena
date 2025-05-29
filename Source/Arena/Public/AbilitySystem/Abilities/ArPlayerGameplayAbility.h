@@ -26,6 +26,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Arena|Ability")
 	UPlayerCombatComponent* GetPlayerCombatComponentFromActorInfo();
 
+	UFUNCTION(BlueprintPure, Category = "Arena|Ability")
+	FGameplayEffectSpecHandle MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttckTypeTag, int32 InUsedAttackCombo);
+
 private:
 	TWeakObjectPtr<AArPlayerCharacter> CachedArPlayerCharacter;
 	TWeakObjectPtr<AArPlayerController> CachedArPlayerController;

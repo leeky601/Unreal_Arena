@@ -4,6 +4,8 @@
 #include "AbilitySystem/Abilities/ArPlayerGameplayAbility.h"
 #include "Character/ArPlayerCharacter.h"
 #include "Controller/ArPlayerController.h"
+#include "AbilitySystem/ArAbilitySystemComponent.h"
+#include "ArenaGameplayTags.h"
 
 AArPlayerCharacter* UArPlayerGameplayAbility::GetPlayerCharacterFromActorInfo()
 {
@@ -26,6 +28,32 @@ AArPlayerController* UArPlayerGameplayAbility::GetPlayerControllerFromActorInfo(
 }
 
 UPlayerCombatComponent* UArPlayerGameplayAbility::GetPlayerCombatComponentFromActorInfo()
-{
+{       
     return GetPlayerCharacterFromActorInfo()->GetPlayerCombatComponent();
+}
+
+FGameplayEffectSpecHandle UArPlayerGameplayAbility::MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttckTypeTag, int32 InUsedAttackCombo)
+{
+    check(EffectClass);
+
+    FGameplayEffectContextHandle EffectContextHandle = GetArAbilitySystemComponentFromActorInfo()->MakeEffectContext();
+    EffectContextHandle.SetAbility(this);
+    EffectContextHandle.AddSourceObject(GetAvatarActorFromActorInfo());
+    EffectContextHandle.AddInstigator(GetAvatarActorFromActorInfo(), GetAvatarActorFromActorInfo());
+
+    FGameplayEffectSpecHandle EffectSpecHandle = GetArAbilitySystemComponentFromActorInfo()->MakeOutgoingSpec(
+        EffectClass, GetAbilityLevel(), EffectContextHandle
+    );
+
+    EffectSpecHandle.Data->SetSetByCallerMagnitude(
+        ArenaGameplayTags::Shared_SetByCaller_BaseDamage,
+        InWeaponBaseDamage
+    );
+
+    if (InCurrentAttckTypeTag.IsValid())
+    {
+        EffectSpecHandle.Data->SetSetByCallerMagnitude(InCurrentAttckTypeTag, InUsedAttackCombo);
+    }
+
+    return EffectSpecHandle;
 }

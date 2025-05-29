@@ -13,3 +13,10 @@ enum class EArValidType : uint8
 	Valid,
 	Invalid
 };
+
+UENUM()
+enum class EArSuccessType : uint8
+{
+	Successful,
+	Failed
+};
