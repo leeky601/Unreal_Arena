@@ -2,6 +2,9 @@
 
 
 #include "AbilitySystem/ArAttributeSet.h"
+#include "GameplayEffectExtension.h"
+
+#include "DebugHelper.h"
 
 UArAttributeSet::UArAttributeSet()
 {
@@ -11,4 +14,44 @@ UArAttributeSet::UArAttributeSet()
 	InitCurrentRage(1.f);
 	InitAttackPower(1.f);
 	InitDefensePower(1.f);
+}
+
+void UArAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
+	{
+		const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth());
+
+		SetCurrentHealth(NewCurrentHealth);
+	}
+
+	if (Data.EvaluatedData.Attribute == GetCurrentRageAttribute())
+	{
+		const float NewCurrentRage = FMath::Clamp(GetCurrentRage(), 0.f, GetMaxRage());
+
+		SetCurrentRage(NewCurrentRage);
+	}
+
+	if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
+	{
+		const float OldHealth = GetCurrentHealth();
+		const float DamageDone = GetDamageTaken();
+
+		const float NewCurrentHealth = FMath::Clamp(OldHealth - DamageDone, 0.f, GetMaxHealth());
+
+		SetCurrentHealth(NewCurrentHealth);
+
+		const FString Msg = FString::Printf(TEXT("OldHealth: %f, DmageDone: %f, CurrentHealth: %f"), OldHealth, DamageDone, NewCurrentHealth);
+
+		Debug::Print(Msg, FColor::Green);
+
+		//ToDo : Notify Ui
+
+		//ToDo : Handle Character Death
+
+		if (NewCurrentHealth == 0.0f)
+		{
+
+		}
+	}
 }
