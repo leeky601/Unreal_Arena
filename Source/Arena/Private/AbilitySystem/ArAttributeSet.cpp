@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/ArAttributeSet.h"
 #include "GameplayEffectExtension.h"
+#include "ArFunctionLibrary.h"
+#include "ArenaGameplayTags.h"
 
 #include "DebugHelper.h"
 
@@ -51,7 +53,7 @@ void UArAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 
 		if (NewCurrentHealth == 0.0f)
 		{
-
+			UArFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), ArenaGameplayTags::Shared_Status_Dead);
 		}
 	}
 }

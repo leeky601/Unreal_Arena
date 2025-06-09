@@ -49,7 +49,7 @@ void UPlayerCombatComponent::OnWeaponPulledFromTargetActor(AActor* TargetActor)
     UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
         GetOwningPawn(),
         ArenaGameplayTags::Player_Event_HitPause,
-        FGameplayEventData());
+        FGameplayEventData()); 
 }
 
 
