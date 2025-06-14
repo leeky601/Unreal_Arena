@@ -14,6 +14,7 @@
 #include "AbilitySystem/ArAttributeSet.h"
 #include "DataAssets/StartUpData/DataAsset_PlayerStartUpData.h"
 #include "Components/Combat/PlayerCombatComponent.h"
+#include "Components/UI/PlayerUIComponent.h"
 
 #include "DebugHelper.h"
 
@@ -42,11 +43,23 @@ AArPlayerCharacter::AArPlayerCharacter()
     GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
     PlayerCombatComponent = CreateDefaultSubobject<UPlayerCombatComponent>(TEXT("PlayerCombatComponent"));
+
+    PlayerUIComponent = CreateDefaultSubobject<UPlayerUIComponent>(TEXT("PlayerUIComponent"));
 }
 
 UPawnCombatComponent* AArPlayerCharacter::GetPawnCombatComponent() const
 {
     return PlayerCombatComponent;
+}
+
+UPawnUIComponent* AArPlayerCharacter::GetPawnUIComponent() const
+{
+    return PlayerUIComponent;
+}
+
+UPlayerUIComponent* AArPlayerCharacter::GetPlayerUIComponent() const
+{
+    return PlayerUIComponent;
 }
 
 void AArPlayerCharacter::PossessedBy(AController* NewController)

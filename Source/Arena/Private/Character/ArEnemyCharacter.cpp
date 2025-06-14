@@ -6,6 +6,9 @@
 #include "Components/Combat/EnemyCombatComponent.h"
 #include "Engine/AssetManager.h"
 #include "DataAssets/StartUpData/DataAsset_EnemyStartUpData.h"
+#include "Components/UI/EnemyUIComponent.h"
+#include "Components/WidgetComponent.h"
+#include "Widgets/ArWidgetBase.h"
 
 #include "DebugHelper.h"
 AArEnemyCharacter::AArEnemyCharacter()
@@ -23,11 +26,36 @@ AArEnemyCharacter::AArEnemyCharacter()
 	GetCharacterMovement()->BrakingDecelerationWalking = 1000.f;
 
 	EnemyCombatComponent = CreateDefaultSubobject<UEnemyCombatComponent>(TEXT("EnemyCombatComponent"));
+
+	EnemyUIComponent = CreateDefaultSubobject<UEnemyUIComponent>(TEXT("EnemyUIComponent"));
+
+	EnemyHealthBarWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("EnemyHealthBarWidgetComponent"));
+	EnemyHealthBarWidgetComponent->SetupAttachment(GetMesh());
 }
 
 UPawnCombatComponent* AArEnemyCharacter::GetPawnCombatComponent() const
 {
 	return EnemyCombatComponent;
+}
+
+UPawnUIComponent* AArEnemyCharacter::GetPawnUIComponent() const
+{
+	return EnemyUIComponent;
+}
+
+UEnemyUIComponent* AArEnemyCharacter::GetEnemyUIComponent() const
+{
+	return EnemyUIComponent;
+}
+
+void AArEnemyCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (UArWidgetBase* HealthBarWidget = Cast<UArWidgetBase>(EnemyHealthBarWidgetComponent->GetWidget()))
+	{
+		HealthBarWidget->InitEnemyWidget(this);
+	}
 }
 
 void AArEnemyCharacter::PossessedBy(AController* NewController)
