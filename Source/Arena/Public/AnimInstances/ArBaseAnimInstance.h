@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "GameplayTagContainer.h"
 #include "ArBaseAnimInstance.generated.h"
 
 /**
@@ -14,4 +15,7 @@ class ARENA_API UArBaseAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 	
+protected:
+	UFUNCTION(BlueprintPure, meta = (BlueprintThreadSafe))
+	bool DoesOwnerHaveTag(FGameplayTag TagToCheck) const ;
 };

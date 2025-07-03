@@ -24,4 +24,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Arena|Ability", meta = (ApplyLevel = "1"))
 	void RemoveGrantedPlayerWeaponAbilities(UPARAM(ref) TArray<FGameplayAbilitySpecHandle>& InSpecHandlesToRemove);
+
+	UFUNCTION(BlueprintCallable, Category = "Arena|Ability", meta = (ApplyLevel = "1"))
+	bool TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate) ;
 };

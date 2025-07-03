@@ -9,9 +9,9 @@ void UDataAsset_EnemyStartUpData::GiveToAbilitySystemComponent(UArAbilitySystemC
 {
 	Super::GiveToAbilitySystemComponent(InASCToGive, ApplyLevel);
 
-	if (!EnemyStartUpAbilities.IsEmpty())
+	if (!EnemyCombatAbilities.IsEmpty())
 	{
-		for (const TSubclassOf<UArEnemyGameplayAbility>& AbilityClass : EnemyStartUpAbilities)
+		for (const TSubclassOf<UArEnemyGameplayAbility>& AbilityClass : EnemyCombatAbilities)
 		{
 			if (!AbilityClass) continue;
 			FGameplayAbilitySpec AbilitySpec(AbilityClass);

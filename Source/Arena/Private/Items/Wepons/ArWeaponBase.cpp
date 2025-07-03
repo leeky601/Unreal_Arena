@@ -3,6 +3,7 @@
 
 #include "Items/Wepons/ArWeaponBase.h"
 #include "Components/BoxComponent.h"
+#include "ArFunctionLibrary.h"
 
 #include "DebugHelper.h"
 // Sets default values
@@ -27,16 +28,14 @@ void AArWeaponBase::OnCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedCo
 	APawn* WeaponOwningPawn = GetInstigator<APawn>();
 
 	checkf(WeaponOwningPawn, TEXT("Forgot to instigator of the weapon: %s"), *GetName());
-	
+
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn != HitPawn)
+		if (UArFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
 		{
 			OnWeaponHitTarget.ExecuteIfBound(OtherActor);
 		}
-
-		//enemy hit check
-	}
+	}	
 }
 
 void AArWeaponBase::OnCollisionBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -47,12 +46,10 @@ void AArWeaponBase::OnCollisionBoxEndOverlap(UPrimitiveComponent* OverlappedComp
 
 	if (APawn* HitPawn = Cast<APawn>(OtherActor))
 	{
-		if (WeaponOwningPawn != HitPawn)
+		if (UArFunctionLibrary::IsTargetPawnHostile(WeaponOwningPawn, HitPawn))
 		{
 			OnWeaponPulledFromTarget.ExecuteIfBound(OtherActor);
 		}
-
-		//enemy hit check
 	}
 }
 

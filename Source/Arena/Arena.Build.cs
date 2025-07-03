@@ -15,7 +15,8 @@ public class Arena : ModuleRules
 			"GameplayTags",
             "EnhancedInput",
             "GameplayTasks",
-			/*"UMG"*/});
+			"UMG",
+            "AnimGraphRuntime"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

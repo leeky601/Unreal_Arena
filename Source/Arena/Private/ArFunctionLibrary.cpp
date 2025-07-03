@@ -5,6 +5,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/ArAbilitySystemComponent.h"
 #include "Interfaces/PawnCombatInterface.h"
+#include "GenericTeamAgentInterface.h"
 
 UArAbilitySystemComponent* UArFunctionLibrary::NativeGetArenaASCFromActor(AActor* InActor)
 {
@@ -64,4 +65,19 @@ UPawnCombatComponent* UArFunctionLibrary::BP_GetPawnCombatComponent(AActor* InAc
     OutValidType = CombatComponent ? EArValidType::Valid : EArValidType::Invalid;
 
     return CombatComponent;
+}
+
+bool UArFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn)
+{
+    check(QueryPawn && TargetPawn);
+
+    IGenericTeamAgentInterface* QueryTeamAgent = Cast<IGenericTeamAgentInterface>(QueryPawn->GetController());
+    IGenericTeamAgentInterface* TargetTeamAgent = Cast<IGenericTeamAgentInterface>(TargetPawn->GetController());
+
+    if (QueryTeamAgent && TargetTeamAgent)
+    {
+        return QueryTeamAgent->GetGenericTeamId() != TargetTeamAgent->GetGenericTeamId();
+    }
+
+    return false;
 }
