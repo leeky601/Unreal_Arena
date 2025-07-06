@@ -4,6 +4,7 @@
 #include "Character/ArCharacterBase.h"
 #include "AbilitySystem/ArAbilitySystemComponent.h"
 #include "AbilitySystem/ArAttributeSet.h"
+#include "MotionWarpingComponent.h"
 
 // Sets default values
 AArCharacterBase::AArCharacterBase()
@@ -17,6 +18,8 @@ AArCharacterBase::AArCharacterBase()
     ArAbilitySystemComponent = CreateDefaultSubobject<UArAbilitySystemComponent>(TEXT("ArAbilitySystemComponent"));
 
     ArAttributeSet = CreateDefaultSubobject<UArAttributeSet>(TEXT("ArAttributeSet"));
+
+    MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
 UAbilitySystemComponent* AArCharacterBase::GetAbilitySystemComponent() const

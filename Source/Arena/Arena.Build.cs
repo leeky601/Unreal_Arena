@@ -16,7 +16,8 @@ public class Arena : ModuleRules
             "EnhancedInput",
             "GameplayTasks",
 			"UMG",
-            "AnimGraphRuntime"});
+            "AnimGraphRuntime",
+            "MotionWarping"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 

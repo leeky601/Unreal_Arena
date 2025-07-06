@@ -43,4 +43,6 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Arena|Ability", meta = (DisplayName = "Apply Effect Spec Handle To Target", ExpandEnumAsExecs = "OutSuccessType"))
 	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, EArSuccessType& OutSuccessType);
+
+
 };
