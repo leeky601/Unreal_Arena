@@ -6,6 +6,7 @@
 #include "ArenaGameplayTags.h"
 #include "DebugHelper.h"
 
+#include "ArFunctionLibrary.h"
 void UEnemyCombatComponent::OnHitTargetActor(AActor* TargetActor)
 {
 	if (OverlappedActors.Contains(TargetActor)) return;
@@ -15,12 +16,12 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* TargetActor)
 	//TODO:: Implement block check
 	bool bIsValidBlock = false;
 
-	const bool bIsPlayerBlocking = false;
+	const bool bIsPlayerBlocking = UArFunctionLibrary::NativeDoesActorHaveTag(TargetActor, ArenaGameplayTags::Player_Status_Blocking);
 	const bool bIsMyAttackUnblockable = false;
 
 	if (bIsPlayerBlocking && !bIsMyAttackUnblockable)
 	{
-
+		bIsValidBlock = UArFunctionLibrary::IsValidBlock(GetOwningPawn(), TargetActor);
 	}
 
 	FGameplayEventData Data;
@@ -29,10 +30,16 @@ void UEnemyCombatComponent::OnHitTargetActor(AActor* TargetActor)
 
 	if (bIsValidBlock)
 	{
-
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+			TargetActor,
+			ArenaGameplayTags::Player_Event_SuccessfulBlock,
+			Data
+		);
 	}
-
-	UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(),
-		ArenaGameplayTags::Shared_Event_MeleeHit,
-		Data);
+	else
+	{
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningPawn(),
+			ArenaGameplayTags::Shared_Event_MeleeHit,
+			Data);
+	}
 }

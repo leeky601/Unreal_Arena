@@ -58,7 +58,7 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 
 	float SourceAttackPower = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetArDamageCapture().AttackPowerDef, EvaluateParameters, SourceAttackPower);
-	Debug::Print(TEXT("SourceAttackPower"), SourceAttackPower);
+	/*Debug::Print(TEXT("SourceAttackPower"), SourceAttackPower);*/
 
 	float WeaponBaseDamage = 0.f;
 	int32 UsedLightAttackCombo = 0;
@@ -69,7 +69,7 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 		if (TagMagnitude.Key.MatchesTagExact(ArenaGameplayTags::Shared_SetByCaller_BaseDamage))
 		{
 			WeaponBaseDamage = TagMagnitude.Value;
-			Debug::Print(TEXT("WeaponBaseDamage"), WeaponBaseDamage);
+			/*Debug::Print(TEXT("WeaponBaseDamage"), WeaponBaseDamage);*/
 		}
 
 		if (TagMagnitude.Key.MatchesTagExact(ArenaGameplayTags::Player_SetByCaller_AttackType_Light))
@@ -88,7 +88,7 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 
 	float TargetDefensePower = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetArDamageCapture().DefensePowerDef, EvaluateParameters, TargetDefensePower);
-	Debug::Print(TEXT("TargetDefensePower"), TargetDefensePower);
+	/*Debug::Print(TEXT("TargetDefensePower"), TargetDefensePower);*/
 
 	if (UsedLightAttackCombo != 0)
 	{
@@ -109,7 +109,7 @@ void UGEExecCalc_DamageTaken::Execute_Implementation(const FGameplayEffectCustom
 	}
 
 	const float FinalDamage = WeaponBaseDamage * SourceAttackPower / TargetDefensePower;
-	Debug::Print(TEXT("FinalDamage"), FinalDamage);
+	/*Debug::Print(TEXT("FinalDamage"), FinalDamage);*/
 
 	if (FinalDamage > 0.f)
 	{

@@ -6,7 +6,10 @@
 #include "AbilitySystem/ArAbilitySystemComponent.h"
 #include "Interfaces/PawnCombatInterface.h"
 #include "GenericTeamAgentInterface.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "ArenaGameplayTags.h"
 
+#include "DebugHelper.h"
 UArAbilitySystemComponent* UArFunctionLibrary::NativeGetArenaASCFromActor(AActor* InActor)
 {
     check(InActor);
@@ -80,4 +83,58 @@ bool UArFunctionLibrary::IsTargetPawnHostile(APawn* QueryPawn, APawn* TargetPawn
     }
 
     return false;
+}
+
+float UArFunctionLibrary::GetScalableValueAtLevel(const FScalableFloat& InScalableFloat, float Inlevel)
+{
+    return InScalableFloat.GetValueAtLevel(Inlevel);
+}
+
+FGameplayTag UArFunctionLibrary::ComputeHitReactDirectionTag(AActor* InAttacker, AActor* InVictim, float& OutAngleDifference)
+{
+    check(InAttacker && InVictim);
+    const FVector VictimForward = InVictim->GetActorForwardVector();
+    const FVector VictimToAttackerNormalize = (InAttacker->GetActorLocation() - InVictim->GetActorLocation()).GetSafeNormal();
+
+    const float DotResult = FVector::DotProduct(VictimForward, VictimToAttackerNormalize);
+    OutAngleDifference = UKismetMathLibrary::DegAcos(DotResult);
+
+    const FVector CrossResult = FVector::CrossProduct(VictimForward, VictimToAttackerNormalize);
+
+    if (CrossResult.Z < 0.f)
+    {
+        OutAngleDifference *= -1.f;
+    }
+
+    if (OutAngleDifference >= -45.f && OutAngleDifference <= 45.f)
+    {
+        return ArenaGameplayTags::Shared_Status_HitReact_Front;
+    }
+    if (OutAngleDifference < -45.f && OutAngleDifference >= -135.f)
+    {
+        return ArenaGameplayTags::Shared_Status_HitReact_Left;
+    }
+    if (OutAngleDifference > 45.f && OutAngleDifference <= 135.f)
+    {
+        return ArenaGameplayTags::Shared_Status_HitReact_Right;
+    }
+    if (OutAngleDifference < -135.f || OutAngleDifference > 135.f)
+    {
+        return ArenaGameplayTags::Shared_Status_HitReact_Back;
+    }
+
+    return ArenaGameplayTags::Shared_Status_HitReact_Front;
+}
+
+bool UArFunctionLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefender)
+{
+    check(InAttacker && InDefender);
+
+    const float DotResult = FVector::DotProduct(InAttacker->GetActorForwardVector(), InDefender->GetActorForwardVector());
+    
+    /*const FString DebugString = FString::Printf(TEXT("Dotproduct: %f %s"), DotResult, DotResult < -0.2f ? TEXT("Block is Valid") : TEXT("Block is not Valid"));
+
+    Debug::Print(DebugString, DotResult < -0.2f ? FColor::Green : FColor::Red);*/
+
+    return DotResult < -0.2f;
 }

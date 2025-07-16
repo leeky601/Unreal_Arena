@@ -4,6 +4,7 @@
 #include "AbilitySystem/ArAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/ArGameplayAbility.h"
 #include "AbilitySystem/Abilities/ArPlayerGameplayAbility.h"
+#include "ArenaGameplayTags.h"
 
 void UArAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputTag)
 {
@@ -13,12 +14,34 @@ void UArAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputT
 	{
 		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)) continue;
 
-		TryActivateAbility(AbilitySpec.Handle);
+		if (InputTag.MatchesTag(ArenaGameplayTags::InputTag_Toggleable))
+		{
+			if (AbilitySpec.IsActive())
+			{
+				CancelAbilityHandle(AbilitySpec.Handle);
+			}
+			else
+			{
+				TryActivateAbility(AbilitySpec.Handle);
+			}
+		}
+		else {
+			TryActivateAbility(AbilitySpec.Handle);
+		}
 	}
 }
 
 void UArAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InputTag)
 {
+	if (!InputTag.MatchesTag(ArenaGameplayTags::InputTag_MustBeHeld) || !InputTag.IsValid()) return;
+
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) && AbilitySpec.IsActive())
+		{
+			CancelAbilityHandle(AbilitySpec.Handle);
+		}
+	}
 }
 
 void UArAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FArenaPlayerAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)

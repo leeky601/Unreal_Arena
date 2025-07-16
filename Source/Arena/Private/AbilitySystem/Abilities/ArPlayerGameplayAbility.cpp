@@ -13,6 +13,7 @@ AArPlayerCharacter* UArPlayerGameplayAbility::GetPlayerCharacterFromActorInfo()
     {
         CachedArPlayerCharacter = Cast<AArPlayerCharacter>(CurrentActorInfo->AvatarActor);
     }
+    
 
     return CachedArPlayerCharacter.IsValid()? CachedArPlayerCharacter.Get() : nullptr;
 }

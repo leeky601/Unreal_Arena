@@ -66,7 +66,7 @@ void UArAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 
 		const FString Msg = FString::Printf(TEXT("OldHealth: %f, DmageDone: %f, CurrentHealth: %f"), OldHealth, DamageDone, NewCurrentHealth);
 
-		Debug::Print(Msg, FColor::Green);
+		/*Debug::Print(Msg, FColor::Green);*/
 
 		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth() / GetMaxHealth());
 
