@@ -7,6 +7,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "Widgets/ArWidgetBase.h"
 #include "Controller/ArPlayerController.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
+#include "Blueprint/WidgetTree.h"
+#include "Components/SizeBox.h"
 
 #include "DebugHelper.h"
 
@@ -38,6 +41,8 @@ void UPlayerGameplayAbility_TargetLock::TryLockOnTarget()
 	if (TargetLockActor)
 	{
 		DrawTargetLockWidget();
+
+		SetTargetLockWidgetPosition();
 	}
 	else
 	{
@@ -93,6 +98,43 @@ void UPlayerGameplayAbility_TargetLock::DrawTargetLockWidget()
 
 		DrawnTargetLockWidget->AddToViewport();
 	}
+}
+
+void UPlayerGameplayAbility_TargetLock::SetTargetLockWidgetPosition()
+{
+	if (!DrawnTargetLockWidget || !TargetLockActor)
+	{
+		CancelTargetLockAbility();
+		return;
+	}
+
+	FVector2D ScreenPosition;
+
+	UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(
+		GetPlayerControllerFromActorInfo(),
+		TargetLockActor->GetActorLocation(),
+		ScreenPosition,
+		true
+	);
+	if (TargetLockWidgetSize == FVector2D::ZeroVector)
+	{
+		DrawnTargetLockWidget->WidgetTree->ForEachWidget(
+			[this](UWidget* FoundWidget)
+			{
+				if (USizeBox* SizeBox = Cast<USizeBox>(FoundWidget))
+				{
+					TargetLockWidgetSize.X = SizeBox->GetWidthOverride();
+					TargetLockWidgetSize.Y = SizeBox->GetHeightOverride();
+				}
+			}
+		);
+
+		ScreenPosition -= TargetLockWidgetSize / 2.f;
+	}
+	
+
+	DrawnTargetLockWidget->SetPositionInViewport(ScreenPosition, false);
+
 }
 
 void UPlayerGameplayAbility_TargetLock::CancelTargetLockAbility()
