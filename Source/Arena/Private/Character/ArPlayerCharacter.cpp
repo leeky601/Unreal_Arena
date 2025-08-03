@@ -15,6 +15,7 @@
 #include "DataAssets/StartUpData/DataAsset_PlayerStartUpData.h"
 #include "Components/Combat/PlayerCombatComponent.h"
 #include "Components/UI/PlayerUIComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 #include "DebugHelper.h"
 
@@ -92,6 +93,9 @@ void AArPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
     ArenaInputComponent->BindNativeInputAction(InputConfigDataAsset, ArenaGameplayTags::InputTag_Move, ETriggerEvent::Triggered, this, &ThisClass::Input_Move);
     ArenaInputComponent->BindNativeInputAction(InputConfigDataAsset, ArenaGameplayTags::InputTag_Look, ETriggerEvent::Triggered, this, &ThisClass::Input_Look);
 
+    ArenaInputComponent->BindNativeInputAction(InputConfigDataAsset, ArenaGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
+    ArenaInputComponent->BindNativeInputAction(InputConfigDataAsset, ArenaGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
+
     ArenaInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
 
@@ -135,6 +139,22 @@ void AArPlayerCharacter::Input_Look(const FInputActionValue& InputActionValue)
     {
         AddControllerPitchInput(LookAxisVector.Y);
     }
+}
+
+void AArPlayerCharacter::Input_SwitchTargetTriggered(const FInputActionValue& InputActionValue)
+{
+    SwitchDirection = InputActionValue.Get<FVector2D>();
+}
+
+void AArPlayerCharacter::Input_SwitchTargetCompleted(const FInputActionValue& InputActionValue)
+{
+    FGameplayEventData Data;
+
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+        this,
+        SwitchDirection.X > 0.f ? ArenaGameplayTags::Player_Event_SwitchTarget_Right : ArenaGameplayTags::Player_Event_SwitchTarget_Left,
+        Data
+    );
 }
 
 void AArPlayerCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)

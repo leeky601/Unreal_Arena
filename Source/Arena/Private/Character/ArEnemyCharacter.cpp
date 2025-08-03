@@ -9,7 +9,9 @@
 #include "Components/UI/EnemyUIComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Widgets/ArWidgetBase.h"
+#include "Components/BoxComponent.h"
 
+#include "ArFunctionLibrary.h"
 #include "DebugHelper.h"
 AArEnemyCharacter::AArEnemyCharacter()
 {
@@ -31,6 +33,16 @@ AArEnemyCharacter::AArEnemyCharacter()
 
 	EnemyHealthBarWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("EnemyHealthBarWidgetComponent"));
 	EnemyHealthBarWidgetComponent->SetupAttachment(GetMesh());
+
+	LeftHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("LeftHandCollisionBox");
+	LeftHandCollisionBox->SetupAttachment(GetMesh());
+	LeftHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	LeftHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
+
+	RightHandCollisionBox = CreateDefaultSubobject<UBoxComponent>("RightHandCollisionBox");
+	RightHandCollisionBox->SetupAttachment(GetMesh());
+	RightHandCollisionBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	RightHandCollisionBox->OnComponentBeginOverlap.AddUniqueDynamic(this, &ThisClass::OnBodyCollisionBoxBeginOverlap);
 }
 
 UPawnCombatComponent* AArEnemyCharacter::GetPawnCombatComponent() const
@@ -63,6 +75,34 @@ void AArEnemyCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	InitStartUpData();
+}
+
+#if WITH_EDITOR
+void AArEnemyCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, LeftHandCollisionBoxAttachBoneName))
+	{
+		LeftHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftHandCollisionBoxAttachBoneName);
+	}
+
+	if (PropertyChangedEvent.GetMemberPropertyName() == GET_MEMBER_NAME_CHECKED(ThisClass, RightHandCollisionBoxAttachBoneName))
+	{
+		RightHandCollisionBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandCollisionBoxAttachBoneName);
+	}
+}
+#endif
+
+void AArEnemyCharacter::OnBodyCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (APawn* HitPawn = Cast<APawn>(OtherActor))
+	{
+		if (UArFunctionLibrary::IsTargetPawnHostile(this, HitPawn))
+		{
+			EnemyCombatComponent->OnHitTargetActor(HitPawn);
+		}
+	}
 }
 
 void AArEnemyCharacter::InitStartUpData()

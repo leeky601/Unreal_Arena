@@ -14,6 +14,7 @@ namespace ArenaGameplayTags {
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LightAttack_Axe);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_HeavyAttack_Axe);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Roll);
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_SwitchTarget);
 
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_MustBeHeld_Block);
@@ -38,6 +39,8 @@ namespace ArenaGameplayTags {
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_Unequip_Axe);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_HitPause);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SuccessfulBlock);
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
 
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
@@ -55,6 +58,7 @@ namespace ArenaGameplayTags {
 
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_Strafing);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_UnderAtack);
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Status_UnblockableAttack);
 
 	/** Shared Tags **/
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_HitReact);
@@ -62,6 +66,7 @@ namespace ArenaGameplayTags {
 
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_HitReact);
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_SpawnProjectile);
 
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_BaseDamage);
 

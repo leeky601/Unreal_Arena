@@ -138,3 +138,13 @@ bool UArFunctionLibrary::IsValidBlock(AActor* InAttacker, AActor* InDefender)
 
     return DotResult < -0.2f;
 }
+
+bool UArFunctionLibrary::ApplyGameplayEffectSpecHandleToTarget(APawn* InInstigator, APawn* InTarget, const FGameplayEffectSpecHandle& InSpecHandle)
+{
+    UArAbilitySystemComponent* SourceASC = NativeGetArenaASCFromActor(InInstigator);
+    UArAbilitySystemComponent* TargetASC = NativeGetArenaASCFromActor(InTarget);
+
+    FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
+
+    return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}

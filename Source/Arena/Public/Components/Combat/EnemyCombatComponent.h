@@ -15,5 +15,8 @@ class ARENA_API UEnemyCombatComponent : public UPawnCombatComponent
 	GENERATED_BODY()
 	
 public:
-	virtual void OnHitTargetActor(AActor* TargetActor) override;
+	virtual void OnHitTargetActor(AActor* TargetActor) override; 
+
+protected:
+	virtual void ToggleBodyCollisionBoxCollision(bool bShouldEnable, EToggleDamageType ToggleDamageType) override;
 };

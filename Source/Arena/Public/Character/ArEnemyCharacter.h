@@ -9,6 +9,8 @@
 class UEnemyCombatComponent;
 class UEnemyUIComponent;
 class UWidgetComponent;
+class UBoxComponent;
+
 /**
  * 
  */
@@ -36,16 +38,40 @@ protected:
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End APawn Interface
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat", meta = (AllowPrivateAccess = "true"))
+#if WITH_EDITOR
+	//~ Begin UObject Interface.
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
+	//~ End UObject Interface
+#endif
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
 	UEnemyCombatComponent* EnemyCombatComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UBoxComponent* LeftHandCollisionBox ;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	FName LeftHandCollisionBoxAttachBoneName ;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	UBoxComponent* RightHandCollisionBox;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Combat")
+	FName RightHandCollisionBoxAttachBoneName;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	UEnemyUIComponent* EnemyUIComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI")
 	UWidgetComponent* EnemyHealthBarWidgetComponent ;
+
+	UFUNCTION()
+	virtual void OnBodyCollisionBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) ;
+
 private:
 	void InitStartUpData();
 public:
 	FORCEINLINE UEnemyCombatComponent* GetEnemyCombatComponent() {return EnemyCombatComponent;}
+	FORCEINLINE UBoxComponent* GetLeftHandCollisionBox() { return LeftHandCollisionBox; }
+	FORCEINLINE UBoxComponent* GetRightHandCollisionBox() { return RightHandCollisionBox; }
 };

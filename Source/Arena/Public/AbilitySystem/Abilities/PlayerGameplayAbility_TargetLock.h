@@ -7,6 +7,7 @@
 #include "PlayerGameplayAbility_TargetLock.generated.h"
 
 class UArWidgetBase;
+class UInputMappingContext;
 /**
  * 
  */
@@ -21,17 +22,26 @@ protected:
 	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 	//~ End UGameplayAbility Interface.
 
+	UFUNCTION(BlueprintCallable)
+	void OnTargetLockTick(float DeltaTime) ;
+
+	UFUNCTION(BlueprintCallable)
+	void SwitchTarget(const FGameplayTag& InSwitchDirectionTag);
+
 private:
 	void TryLockOnTarget();
 	void GetAvailableTargetToLock();
-
-	AActor* GetNearestAvailableActor();
-
+	AActor* GetNearestAvailableActor(TArray<AActor*> InAvailableActor);
 	void DrawTargetLockWidget();
 	void SetTargetLockWidgetPosition();
+	void InitTargetLockMovement();
+	void InitMappingContext();
+	void DivideAvailableTargetLeftAndRight(TArray<AActor*>& OutTargetOnLeft, TArray<AActor*>& OutTargetOnRight);
 
 	void CancelTargetLockAbility();
 	void CleanUp();
+	void ResetTargetLockMovement();
+	void ResetMappingContext();
 
 	UPROPERTY(EditDefaultsOnly, Category = "TargetLock")
 	float BoxTraceDistance = 5000.f;
@@ -48,15 +58,30 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "TargetLock")
 	TSubclassOf<UArWidgetBase> TargetLockWidgetClass ;
 
+	UPROPERTY(EditDefaultsOnly, Category = "TargetLock")
+	float TargetLockRotInterpSpeed = 5.f ;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TargetLock")
+	float TargetLockWalkSpeed = 150.f ;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TargetLock")
+	UInputMappingContext* TargetLockMappingContext ;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TargetLock")
+	float LookAtOffset = 20.f;
+
 	UPROPERTY()
 	TArray<AActor*> AvailableTargetsToLock ;
 	
 	UPROPERTY()
-	AActor* TargetLockActor ;
+	AActor* CurrentTargetLockActor ;
 
 	UPROPERTY()
 	UArWidgetBase* DrawnTargetLockWidget ;
 
 	UPROPERTY()
 	FVector2D TargetLockWidgetSize = FVector2D::ZeroVector;
+
+	UPROPERTY()
+	float CachedDefaultMaxWalkSpeed ;
 };
