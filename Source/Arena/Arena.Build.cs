@@ -18,7 +18,8 @@ public class Arena : ModuleRules
 			"UMG",
             "AnimGraphRuntime",
             "MotionWarping",
-            "Niagara"});
+            "Niagara",
+            "NavigationSystem"});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
