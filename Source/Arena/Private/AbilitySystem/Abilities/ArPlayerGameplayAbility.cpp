@@ -55,6 +55,7 @@ FGameplayEffectSpecHandle UArPlayerGameplayAbility::MakePlayerDamageEffectSpecHa
     {
         EffectSpecHandle.Data->SetSetByCallerMagnitude(InCurrentAttckTypeTag, InUsedAttackCombo);
     }
+  
 
     return EffectSpecHandle;
 }

@@ -55,7 +55,6 @@ void UPawnCombatComponent::ToggleWeaponCollision(bool bShouldEnable, EToggleDama
 	{
 		ToggleBodyCollisionBoxCollision(bShouldEnable, ToggleDamageType);
 	}
-	//Hand Collision
 }
 
 void UPawnCombatComponent::OnHitTargetActor(AActor* TargetActor)

@@ -49,6 +49,20 @@ void UArAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 
 		SetCurrentRage(NewCurrentRage);
 
+		if (GetCurrentRage() == GetMaxRage())
+		{
+			UArFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), ArenaGameplayTags::Player_Status_Rage_Full);
+		}
+		else if (GetCurrentRage() == 0.f)
+		{
+			UArFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), ArenaGameplayTags::Player_Status_Rage_None);
+		}
+		else
+		{
+			UArFunctionLibrary::RemoveGameplayTagToActorIfFound(Data.Target.GetAvatarActor(), ArenaGameplayTags::Player_Status_Rage_Full);
+			UArFunctionLibrary::RemoveGameplayTagToActorIfFound(Data.Target.GetAvatarActor(), ArenaGameplayTags::Player_Status_Rage_None);
+		}
+
 		if (UPlayerUIComponent* PlayerUIComponent = CachedPawnUIInterface->GetPlayerUIComponent())
 		{
 			PlayerUIComponent->OnCurrentRageChanged.Broadcast(GetCurrentRage() / GetMaxRage());

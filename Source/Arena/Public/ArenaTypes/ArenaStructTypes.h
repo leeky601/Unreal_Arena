@@ -15,7 +15,7 @@ struct FArenaPlayerAbilitySet
 {
 	GENERATED_BODY()
 
-	public:
+public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "InputTag"))
 	FGameplayTag InputTag;
 
@@ -23,6 +23,18 @@ struct FArenaPlayerAbilitySet
 	TSubclassOf<UArPlayerGameplayAbility> AbilityToGrant;
 
 	bool IsValid() const;
+};
+
+USTRUCT(BlueprintType)
+struct FArenaPlayerSpecialAbilitySet : public FArenaPlayerAbilitySet
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (Categories = "CoolDown"))
+	FGameplayTag AbilityCoolDownTag ;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSoftObjectPtr<UMaterialInterface> AbilityIconMaterial ;
 };
 
 USTRUCT(BlueprintType)
@@ -38,6 +50,9 @@ struct FArenaPlayerWeaponData
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
 	TArray<FArenaPlayerAbilitySet> DefaultWeaponAbilities;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (TitleProperty = "InputTag"))
+	TArray<FArenaPlayerSpecialAbilitySet> SpecialWeaponAbilities;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FScalableFloat WeaponBaseDamage;

@@ -14,18 +14,12 @@ void UArAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InputT
 	{
 		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)) continue;
 
-		if (InputTag.MatchesTag(ArenaGameplayTags::InputTag_Toggleable))
+		if (InputTag.MatchesTag(ArenaGameplayTags::InputTag_Toggleable) && AbilitySpec.IsActive())
 		{
-			if (AbilitySpec.IsActive())
-			{
-				CancelAbilityHandle(AbilitySpec.Handle);
-			}
-			else
-			{
-				TryActivateAbility(AbilitySpec.Handle);
-			}
+			CancelAbilityHandle(AbilitySpec.Handle);
 		}
-		else {
+		else
+		{
 			TryActivateAbility(AbilitySpec.Handle);
 		}
 	}
@@ -44,7 +38,7 @@ void UArAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& Input
 	}
 }
 
-void UArAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FArenaPlayerAbilitySet>& InDefaultWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
+void UArAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FArenaPlayerAbilitySet>& InDefaultWeaponAbilities, const TArray<FArenaPlayerSpecialAbilitySet>& InSpecialWeaponAbilities, int32 ApplyLevel, TArray<FGameplayAbilitySpecHandle>& OutGrantedAbilitySpecHandles)
 {
 	if (InDefaultWeaponAbilities.IsEmpty())
 	{
@@ -52,6 +46,18 @@ void UArAbilitySystemComponent::GrantPlayerWeaponAbilities(const TArray<FArenaPl
 	}
 
 	for (const FArenaPlayerAbilitySet& AbilitySet : InDefaultWeaponAbilities)
+	{
+		if (!AbilitySet.IsValid()) continue;
+
+		FGameplayAbilitySpec AbilitySpec(AbilitySet.AbilityToGrant);
+		AbilitySpec.SourceObject = GetAvatarActor();
+		AbilitySpec.Level = ApplyLevel;
+		AbilitySpec.DynamicAbilityTags.AddTag(AbilitySet.InputTag);
+
+		OutGrantedAbilitySpecHandles.AddUnique(GiveAbility(AbilitySpec));
+	}
+
+	for (const FArenaPlayerSpecialAbilitySet& AbilitySet : InSpecialWeaponAbilities)
 	{
 		if (!AbilitySet.IsValid()) continue;
 
