@@ -8,6 +8,7 @@
 #include "GenericTeamAgentInterface.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "ArenaGameplayTags.h"
+#include "ArenaTypes/ArCoolDownAction.h"
 
 #include "DebugHelper.h"
 UArAbilitySystemComponent* UArFunctionLibrary::NativeGetArenaASCFromActor(AActor* InActor)
@@ -147,4 +148,39 @@ bool UArFunctionLibrary::ApplyGameplayEffectSpecHandleToTarget(APawn* InInstigat
     FActiveGameplayEffectHandle ActiveGameplayEffectHandle = SourceASC->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
 
     return ActiveGameplayEffectHandle.WasSuccessfullyApplied();
+}
+
+void UArFunctionLibrary::CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime, EArCountDownActionInput CountDownActionInput, UPARAM(DisplayName = "Output") EArCountDownActionOutput& CountDownActionOutput, FLatentActionInfo LatentActionInfo)
+{
+    UWorld* World = nullptr;
+    if (GEngine)
+    {
+        World= GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+    }
+
+    if (!World) return;
+
+    FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+
+    FArenaCoolDownAction* FoundAction = LatentActionManager.FindExistingAction<FArenaCoolDownAction>(LatentActionInfo.CallbackTarget, LatentActionInfo.UUID);
+
+    if (CountDownActionInput == EArCountDownActionInput::Start)
+    {
+        if (!FoundAction)
+        {
+            LatentActionManager.AddNewAction(
+                LatentActionInfo.CallbackTarget,
+                LatentActionInfo.UUID,
+                new FArenaCoolDownAction(TotalTime, UpdateInterval, OutRemainingTime, CountDownActionOutput, LatentActionInfo)
+                );
+        }
+    }
+
+    if (CountDownActionInput == EArCountDownActionInput::Cancel)
+    {
+        if (FoundAction)
+        {
+            FoundAction->CancelAction();
+        }
+    }
 }

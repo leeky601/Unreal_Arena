@@ -5,6 +5,8 @@
 #include "AbilitySystem/ArAbilitySystemComponent.h"
 #include "Components/Combat/PawnCombatComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "ArFunctionLibrary.h"
+#include "ArenaGameplayTags.h"
 
 void UArGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
@@ -48,7 +50,7 @@ FActiveGameplayEffectHandle UArGameplayAbility::NativeApplyEffectSpecHandleToTar
 
 	check(TargetASC && InSpecHandle.IsValid());
 
-	return GetArAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC);
+	return GetArAbilitySystemComponentFromActorInfo()->ApplyGameplayEffectSpecToTarget(*InSpecHandle.Data, TargetASC); 
 }
 
 FActiveGameplayEffectHandle UArGameplayAbility::BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, EArSuccessType& OutSuccessType)
@@ -60,5 +62,33 @@ FActiveGameplayEffectHandle UArGameplayAbility::BP_ApplyEffectSpecHandleToTarget
 	return ActiveGameplayEffectHandle;
 }
 
+void UArGameplayAbility::ApplyEffectSpecHandleToHitResults(const FGameplayEffectSpecHandle& InSpecHandle, const TArray<FHitResult>& InHitResults)
+{
+	if (InHitResults.IsEmpty()) return;
 
+	APawn* OwningPawn = CastChecked<APawn>(GetAvatarActorFromActorInfo());
 
+	for (const FHitResult& HitResult : InHitResults)
+	{
+		if (APawn* HitPawn = Cast<APawn>(HitResult.GetActor()))
+		{
+			if (UArFunctionLibrary::IsTargetPawnHostile(OwningPawn, HitPawn))
+			{
+				FActiveGameplayEffectHandle ActiveGameplayEffectSpecHandle = NativeApplyEffectSpecHandleToTarget(HitPawn, InSpecHandle);
+
+				if (ActiveGameplayEffectSpecHandle.WasSuccessfullyApplied())
+				{
+					FGameplayEventData Data;
+					Data.Instigator = OwningPawn;
+					Data.Target = HitPawn;
+
+					UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+						HitPawn,
+						ArenaGameplayTags::Shared_Event_HitReact,
+						Data
+					);
+				}
+			}
+		}
+	}
+}

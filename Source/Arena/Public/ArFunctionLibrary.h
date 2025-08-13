@@ -52,4 +52,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Arena|FunctionLibrary")
 	static bool ApplyGameplayEffectSpecHandleToTarget(APawn* InInstigator, APawn* InTarget, const FGameplayEffectSpecHandle& InSpecHandle) ;
 
+	UFUNCTION(BlueprintCallable, Category = "Arena|FunctionLibrary", meta = (Latent, ExpandEnumAsExecs = "CountDownActionInput|CountDownActionOutput", WorldContext = "WorldContextObject", LatentInfo = "LatentActionInfo", TotalTime = "1.0", UpdateInterval = "0.1"))
+	static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime, EArCountDownActionInput CountDownActionInput, UPARAM(DisplayName = "Output") EArCountDownActionOutput& CountDownActionOutput, FLatentActionInfo LatentActionInfo);
+
 };

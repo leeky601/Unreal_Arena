@@ -34,7 +34,7 @@ struct FArenaPlayerSpecialAbilitySet : public FArenaPlayerAbilitySet
 	FGameplayTag AbilityCoolDownTag ;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSoftObjectPtr<UMaterialInterface> AbilityIconMaterial ;
+	TSoftObjectPtr<UMaterialInterface> SoftAbilityIconMaterial ;
 };
 
 USTRUCT(BlueprintType)

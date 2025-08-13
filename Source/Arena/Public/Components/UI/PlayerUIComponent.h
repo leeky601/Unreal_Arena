@@ -4,9 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Components/UI/PawnUIComponent.h"
+#include "GameplayTagContainer.h"
 #include "PlayerUIComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCurrentEquippedChangedDelegate, TSoftObjectPtr<UTexture2D>, ChangedWeaponTexture);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAbilityIconUpdatedDelegate, FGameplayTag, AbilityInputTag, TSoftObjectPtr<UMaterialInterface>,AbilityIcon);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAbilityCooldownBeginDelegate, FGameplayTag, AbilityInputTag, float, TotalCooldown, float, RemainCooldown);
+
 
 /**
  * 
@@ -22,4 +28,10 @@ public:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnCurrentEquippedChangedDelegate OnCurrentEquippedChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnAbilityIconUpdatedDelegate OnAbilityIconUpdated;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnAbilityCooldownBeginDelegate OnAbilityCooldownBegin ;
 };

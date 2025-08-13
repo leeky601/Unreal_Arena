@@ -52,6 +52,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> CharacterStartUpData;
 
+public:
 	FORCEINLINE UArAbilitySystemComponent* GetArAbilitySystemComponent() const {return ArAbilitySystemComponent;}
 
 	FORCEINLINE UArAttributeSet* GetArAttributeSet() const {return ArAttributeSet;}

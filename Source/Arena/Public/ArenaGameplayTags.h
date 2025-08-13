@@ -39,6 +39,8 @@ namespace ArenaGameplayTags {
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_TargetLock);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Rage);
 
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_PickUp_Stone);
+
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Light);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_SpecialWeaponAbility_Heavy);
 
@@ -54,6 +56,7 @@ namespace ArenaGameplayTags {
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Left);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
 
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);

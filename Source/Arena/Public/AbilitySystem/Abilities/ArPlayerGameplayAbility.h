@@ -29,6 +29,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Arena|Ability")
 	FGameplayEffectSpecHandle MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttckTypeTag, int32 InUsedAttackCombo);
 
+	UFUNCTION(BlueprintCallable, Category = "Arena|Ability")
+	bool GetAbilityCoolDownRemaingByTag(FGameplayTag InCoolDownTag, float& TotalTime, float& RemainingTime) ;
+
 private:
 	TWeakObjectPtr<AArPlayerCharacter> CachedArPlayerCharacter;
 	TWeakObjectPtr<AArPlayerController> CachedArPlayerController;
