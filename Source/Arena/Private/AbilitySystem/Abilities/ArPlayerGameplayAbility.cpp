@@ -33,6 +33,11 @@ UPlayerCombatComponent* UArPlayerGameplayAbility::GetPlayerCombatComponentFromAc
     return GetPlayerCharacterFromActorInfo()->GetPlayerCombatComponent();
 }
 
+UPlayerUIComponent* UArPlayerGameplayAbility::GetPlayerUIComponentFromActorInfo()
+{
+    return  GetPlayerCharacterFromActorInfo()->GetPlayerUIComponent();
+}
+
 FGameplayEffectSpecHandle UArPlayerGameplayAbility::MakePlayerDamageEffectSpecHandle(TSubclassOf<UGameplayEffect> EffectClass, float InWeaponBaseDamage, FGameplayTag InCurrentAttckTypeTag, int32 InUsedAttackCombo)
 {
     check(EffectClass);

@@ -95,6 +95,8 @@ void AArPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
     ArenaInputComponent->BindNativeInputAction(InputConfigDataAsset, ArenaGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Triggered, this, &ThisClass::Input_SwitchTargetTriggered);
     ArenaInputComponent->BindNativeInputAction(InputConfigDataAsset, ArenaGameplayTags::InputTag_SwitchTarget, ETriggerEvent::Completed, this, &ThisClass::Input_SwitchTargetCompleted);
+    
+    ArenaInputComponent->BindNativeInputAction(InputConfigDataAsset, ArenaGameplayTags::InputTag_PickUp_Stones, ETriggerEvent::Started, this, &ThisClass::Input_PickUpStonesStarted);
 
     ArenaInputComponent->BindAbilityInputAction(InputConfigDataAsset, this, &ThisClass::Input_AbilityInputPressed, &ThisClass::Input_AbilityInputReleased);
 }
@@ -153,6 +155,17 @@ void AArPlayerCharacter::Input_SwitchTargetCompleted(const FInputActionValue& In
     UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
         this,
         SwitchDirection.X > 0.f ? ArenaGameplayTags::Player_Event_SwitchTarget_Right : ArenaGameplayTags::Player_Event_SwitchTarget_Left,
+        Data
+    );
+}
+
+void AArPlayerCharacter::Input_PickUpStonesStarted(const FInputActionValue& InputActionValue)
+{
+    FGameplayEventData Data;
+
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(
+        this,
+        ArenaGameplayTags::Player_Event_ConsumeStones,
         Data
     );
 }

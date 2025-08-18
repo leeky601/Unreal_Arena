@@ -27,6 +27,7 @@ namespace ArenaGameplayTags {
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_TargetLock);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Toggleable_Rage);
 
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_PickUp_Stones);
 
 	/** Player Tags **/
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Ability_Equip_Axe);
@@ -57,6 +58,7 @@ namespace ArenaGameplayTags {
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_SwitchTarget_Right);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ActivateRage);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_AOE);
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Event_ConsumeStones);
 
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_JumpToFinisher);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Status_Rolling);
@@ -74,6 +76,7 @@ namespace ArenaGameplayTags {
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Melee);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Ranged);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_SummonEnemies);
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_SpawnStones);
 
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
 
