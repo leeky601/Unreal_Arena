@@ -35,3 +35,12 @@ enum class EArCountDownActionOutput : uint8
 	Completed,
 	Canceled
 };
+
+UENUM(BlueprintType)
+enum class EArGameDifficulty : uint8
+{
+	Easy,
+	Normal,
+	Hard,
+	Impossible
+};

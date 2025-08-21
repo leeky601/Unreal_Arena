@@ -3,3 +3,8 @@
 
 #include "GameModes/ArGameMode.h"
 
+AArGameMode::AArGameMode()
+{
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+}

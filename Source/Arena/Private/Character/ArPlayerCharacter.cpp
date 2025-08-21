@@ -16,6 +16,7 @@
 #include "Components/Combat/PlayerCombatComponent.h"
 #include "Components/UI/PlayerUIComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GameModes/ArGameMode.h"
 
 #include "DebugHelper.h"
 
@@ -71,7 +72,34 @@ void AArPlayerCharacter::PossessedBy(AController* NewController)
     {
         if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.LoadSynchronous())
         {
-            LoadedData->GiveToAbilitySystemComponent(ArAbilitySystemComponent);
+            uint32 ApplyLevel = 1;
+
+            if(AArGameMode* ArGameMode = GetWorld()->GetAuthGameMode<AArGameMode>())
+            {
+                switch (ArGameMode->GetGameDifficulty())
+                {
+                case EArGameDifficulty::Easy:
+                    ApplyLevel = 4;
+                    break;
+
+                case EArGameDifficulty::Normal                    :
+                    ApplyLevel = 3;
+                    break;
+
+                case EArGameDifficulty::Hard:
+                    ApplyLevel = 2;
+                    break;
+
+                case EArGameDifficulty::Impossible:
+                    ApplyLevel = 1;
+                    break;
+
+                default:
+                    break;
+                }
+            }
+
+            LoadedData->GiveToAbilitySystemComponent(ArAbilitySystemComponent, ApplyLevel);
         }
     }
 }

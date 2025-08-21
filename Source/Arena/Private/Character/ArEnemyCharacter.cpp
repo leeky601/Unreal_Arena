@@ -10,6 +10,7 @@
 #include "Components/WidgetComponent.h"
 #include "Widgets/ArWidgetBase.h"
 #include "Components/BoxComponent.h"
+#include "GameModes/ArGameMode.h"
 
 #include "ArFunctionLibrary.h"
 #include "DebugHelper.h"
@@ -109,11 +110,38 @@ void AArEnemyCharacter::InitStartUpData()
 {
 	if (CharacterStartUpData.IsNull()) return;
 
+	uint32 ApplyLevel = 1;
+
+	if (AArGameMode* ArGameMode = GetWorld()->GetAuthGameMode<AArGameMode>())
+	{
+		switch (ArGameMode->GetGameDifficulty())
+		{
+		case EArGameDifficulty::Easy:
+			ApplyLevel = 4;
+			break;
+
+		case EArGameDifficulty::Normal:
+			ApplyLevel = 3;
+			break;
+
+		case EArGameDifficulty::Hard:
+			ApplyLevel = 2;
+			break;
+
+		case EArGameDifficulty::Impossible:
+			ApplyLevel = 1;
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(CharacterStartUpData.ToSoftObjectPath(),
-		FStreamableDelegate::CreateLambda([this]() {
+		FStreamableDelegate::CreateLambda([this, ApplyLevel]() {
 				if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.Get())
 				{
-					LoadedData->GiveToAbilitySystemComponent(ArAbilitySystemComponent);
+					LoadedData->GiveToAbilitySystemComponent(ArAbilitySystemComponent, ApplyLevel);
 				}
 			}
 		)
