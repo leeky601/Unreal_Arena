@@ -7,8 +7,21 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/TargetPoint.h"
 #include "NavigationSystem.h"
+#include "ArFunctionLibrary.h"
 
 #include "DebugHelper.h"
+
+void AArSurvivalGameMode::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+	EArGameDifficulty SavedDifficulty;
+
+	if (UArFunctionLibrary::TryLoadSavedGameDifficulty(SavedDifficulty))
+	{
+		GameDifficulty = SavedDifficulty;
+	}
+}
 
 void AArSurvivalGameMode::BeginPlay()
 {

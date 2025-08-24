@@ -117,19 +117,19 @@ void AArEnemyCharacter::InitStartUpData()
 		switch (ArGameMode->GetGameDifficulty())
 		{
 		case EArGameDifficulty::Easy:
-			ApplyLevel = 4;
+			ApplyLevel = 1;
 			break;
 
 		case EArGameDifficulty::Normal:
-			ApplyLevel = 3;
-			break;
-
-		case EArGameDifficulty::Hard:
 			ApplyLevel = 2;
 			break;
 
+		case EArGameDifficulty::Hard:
+			ApplyLevel = 3;
+			break;
+
 		case EArGameDifficulty::Impossible:
-			ApplyLevel = 1;
+			ApplyLevel = 4;
 			break;
 
 		default:

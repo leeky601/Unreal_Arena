@@ -9,6 +9,7 @@
 
 class UArAbilitySystemComponent;
 class UPawnCombatComponent;
+class UArGameInstance;
 
 /**
  * 
@@ -55,4 +56,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Arena|FunctionLibrary", meta = (Latent, ExpandEnumAsExecs = "CountDownActionInput|CountDownActionOutput", WorldContext = "WorldContextObject", LatentInfo = "LatentActionInfo", TotalTime = "1.0", UpdateInterval = "0.1"))
 	static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime, EArCountDownActionInput CountDownActionInput, UPARAM(DisplayName = "Output") EArCountDownActionOutput& CountDownActionOutput, FLatentActionInfo LatentActionInfo);
 
+	UFUNCTION(BlueprintPure, Category = "Arena|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+	static UArGameInstance* GetArGameInstance(UObject* WorldContextObject) ;
+
+	UFUNCTION(BlueprintCallable, Category = "Arena|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+	static void ToggleInputMode(const UObject* WorldContextObject, EArGameInputMode InInputMode) ;
+
+	UFUNCTION(BlueprintCallable, Category = "Arena|FunctionLibrary")
+	static void SaveGameDifficulty(EArGameDifficulty InGameDifficulty) ;
+
+	UFUNCTION(BlueprintCallable, Category = "Arena|FunctionLibrary")
+	static bool TryLoadSavedGameDifficulty(EArGameDifficulty& OutGameDifficulty) ;
 };

@@ -80,18 +80,22 @@ void AArPlayerCharacter::PossessedBy(AController* NewController)
                 {
                 case EArGameDifficulty::Easy:
                     ApplyLevel = 4;
+                    Debug::Print(TEXT("Easy"));
                     break;
 
                 case EArGameDifficulty::Normal                    :
                     ApplyLevel = 3;
+                    Debug::Print(TEXT("Normal"));
                     break;
 
                 case EArGameDifficulty::Hard:
                     ApplyLevel = 2;
+                    Debug::Print(TEXT("Hard"));
                     break;
 
                 case EArGameDifficulty::Impossible:
                     ApplyLevel = 1;
+                    Debug::Print(TEXT("Impossible"));
                     break;
 
                 default:

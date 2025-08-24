@@ -102,4 +102,11 @@ namespace ArenaGameplayTags {
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Left);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_HitReact_Right);
 	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Invincible);
+
+	/** Game Data Tags **/
+
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_SurvivalGameModeMap);
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_Level_MainMenu);
+
+	ARENA_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameData_SaveGame_Slot_1);
 }

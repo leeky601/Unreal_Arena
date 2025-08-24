@@ -44,3 +44,10 @@ enum class EArGameDifficulty : uint8
 	Hard,
 	Impossible
 };
+
+UENUM(BlueprintType)
+enum class EArGameInputMode : uint8
+{
+	GameOnly,
+	UIOnly
+};

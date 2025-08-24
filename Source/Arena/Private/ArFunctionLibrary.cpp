@@ -9,6 +9,9 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "ArenaGameplayTags.h"
 #include "ArenaTypes/ArCoolDownAction.h"
+#include "ArGameInstance.h"
+#include "SaveGame/ArSaveGame.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "DebugHelper.h"
 UArAbilitySystemComponent* UArFunctionLibrary::NativeGetArenaASCFromActor(AActor* InActor)
@@ -183,4 +186,82 @@ void UArFunctionLibrary::CountDown(const UObject* WorldContextObject, float Tota
             FoundAction->CancelAction();
         }
     }
+}
+
+UArGameInstance* UArFunctionLibrary::GetArGameInstance(UObject* WorldContextObject)
+{
+    if (GEngine)
+    {
+        if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+        {
+            return World->GetGameInstance<UArGameInstance>();
+        }
+    }
+
+    return nullptr;
+}
+
+void UArFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject, EArGameInputMode InInputMode)
+{
+    APlayerController* PlayerController = nullptr;
+
+    if (GEngine)
+    {
+        if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+        {
+            PlayerController = World->GetFirstPlayerController();
+        }
+    }
+
+    FInputModeGameOnly GameOnly;
+    FInputModeUIOnly UIOnly;
+
+    switch (InInputMode)
+    {
+    case EArGameInputMode::GameOnly:
+        PlayerController->SetInputMode(GameOnly);
+        PlayerController->bShowMouseCursor = false;
+
+        break;
+    case EArGameInputMode::UIOnly:
+        PlayerController->SetInputMode(UIOnly);
+        PlayerController->bShowMouseCursor = true;
+
+        break;
+    default:
+        break;
+    }
+}
+
+void UArFunctionLibrary::SaveGameDifficulty(EArGameDifficulty InGameDifficulty)
+{
+    USaveGame* SaveGameObject = UGameplayStatics::CreateSaveGameObject(UArSaveGame::StaticClass());
+
+    if (UArSaveGame* ArSaveGameObject = Cast<UArSaveGame>(SaveGameObject))
+    {
+        ArSaveGameObject->SavedGameDifficulty = InGameDifficulty;
+
+        const bool bWasSaved = UGameplayStatics::SaveGameToSlot(ArSaveGameObject, ArenaGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
+
+        Debug::Print(bWasSaved ? TEXT("Save Sucessed") : TEXT("Save Failed"));
+    }
+}
+
+bool UArFunctionLibrary::TryLoadSavedGameDifficulty(EArGameDifficulty& OutGameDifficulty)
+{
+    if (UGameplayStatics::DoesSaveGameExist(ArenaGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0))
+    {
+        USaveGame* SaveGameObject = UGameplayStatics::LoadGameFromSlot(ArenaGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
+
+        if (UArSaveGame* ArSaveGameObject = Cast<UArSaveGame>(SaveGameObject))
+        {
+            OutGameDifficulty = ArSaveGameObject->SavedGameDifficulty;
+
+            Debug::Print(TEXT("Load Sucessed"));
+
+            return true;
+        }
+    }
+
+    return false;
 }
