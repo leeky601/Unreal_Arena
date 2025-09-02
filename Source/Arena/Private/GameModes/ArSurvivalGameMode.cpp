@@ -108,7 +108,7 @@ void AArSurvivalGameMode::PreLoadSoftClassToSpawn()
 		return;
 	}
 
-	PreLoadedClassMap.Empty();
+	PreLoadedEnemyClassMap.Empty();
 
 	for (const FArEnemyWaveSpwanerInfo& SpawnerInfo : GetCurrentWaveTableRow()->EnemyWaveSpwanerDefinitions)
 	{
@@ -121,7 +121,7 @@ void AArSurvivalGameMode::PreLoadSoftClassToSpawn()
 				{
 					if (UClass* LoadedClass = SpawnerInfo.SoftEnemyClassToSpawn.Get())
 					{
-						PreLoadedClassMap.Emplace(SpawnerInfo.SoftEnemyClassToSpawn, LoadedClass);
+						PreLoadedEnemyClassMap.Emplace(SpawnerInfo.SoftEnemyClassToSpawn, LoadedClass);
 					}
 				}
 			)
@@ -161,7 +161,7 @@ int32 AArSurvivalGameMode::TrySpawnEnemiesWave()
 
 		const int32 NumToSpawn = FMath::RandRange(SpawnerInfo.MinPerSpawnCount, SpawnerInfo.MaxPerSpawnCount);
 
-		UClass* LoadedEnemyClass = PreLoadedClassMap.FindChecked(SpawnerInfo.SoftEnemyClassToSpawn);
+		UClass* LoadedEnemyClass = PreLoadedEnemyClassMap.FindChecked(SpawnerInfo.SoftEnemyClassToSpawn);
 
 		for (int32 i = 0; i < NumToSpawn; i++)
 		{
@@ -171,6 +171,8 @@ int32 AArSurvivalGameMode::TrySpawnEnemiesWave()
 
 			FVector RandLocation;
 			UNavigationSystemV1::K2_GetRandomLocationInNavigableRadius(this, SpawnOrigin, RandLocation, 400.f);
+
+			RandLocation += FVector(0.f, 0.f, 150.f);
 
 			AArEnemyCharacter* SpawnedEnemy = GetWorld()->SpawnActor<AArEnemyCharacter>(LoadedEnemyClass, RandLocation, SpawnRotator, SpawnParameters);
 

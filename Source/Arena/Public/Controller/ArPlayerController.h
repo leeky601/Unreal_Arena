@@ -7,6 +7,8 @@
 #include "GenericTeamAgentInterface.h"
 #include "ArPlayerController.generated.h"
 
+class UUserWidget;
+
 /**
  * 
  */
@@ -21,6 +23,9 @@ public:
 	//~ Begin IGenericTeamAgentInterface Interface.
 	virtual FGenericTeamId GetGenericTeamId() const override;
 	//~ End IGenericTeamAgentInterface Interface.
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Player|OverlayWidget")
+	TObjectPtr<UUserWidget> OverlayWidget ;
 
 private:
 	FGenericTeamId PlayerTeamID;

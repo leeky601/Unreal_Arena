@@ -48,6 +48,7 @@ struct FArEnemyWaveSpawnerTableRow : public FTableRowBase
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSurvivalGameModeStateChangedDelegate, EArSurvivalGameModeState, InState);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelSequencePlayDelegate, bool, bIsPlaying);
 
 UCLASS()
 class ARENA_API AArSurvivalGameMode : public AArGameMode
@@ -75,6 +76,9 @@ private:
 
 	UPROPERTY(BlueprintAssignable, BlueprintCallable)
 	FOnSurvivalGameModeStateChangedDelegate OnSurvivalGameModeStateChanged;
+
+	UPROPERTY(BlueprintAssignable, BlueprintCallable)
+	FOnLevelSequencePlayDelegate OnLevelSequencePlayDelegate ;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "WaveDefinition", meta = (AllowPrivateAccess = "true"))
 	UDataTable* EnemyWaveSpawnerDataTable ;
@@ -104,7 +108,7 @@ private:
 	int32 CurrentWaveCount = 1 ;
 
 	UPROPERTY()
-	TMap< TSoftClassPtr< AArEnemyCharacter >, UClass* > PreLoadedClassMap ;
+	TMap< TSoftClassPtr< AArEnemyCharacter >, UClass* > PreLoadedEnemyClassMap ;
 
 	UPROPERTY()
 	TArray<AActor*> TargetPointArray ;

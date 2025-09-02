@@ -242,8 +242,6 @@ void UArFunctionLibrary::SaveGameDifficulty(EArGameDifficulty InGameDifficulty)
         ArSaveGameObject->SavedGameDifficulty = InGameDifficulty;
 
         const bool bWasSaved = UGameplayStatics::SaveGameToSlot(ArSaveGameObject, ArenaGameplayTags::GameData_SaveGame_Slot_1.GetTag().ToString(), 0);
-
-        Debug::Print(bWasSaved ? TEXT("Save Sucessed") : TEXT("Save Failed"));
     }
 }
 
@@ -256,8 +254,6 @@ bool UArFunctionLibrary::TryLoadSavedGameDifficulty(EArGameDifficulty& OutGameDi
         if (UArSaveGame* ArSaveGameObject = Cast<UArSaveGame>(SaveGameObject))
         {
             OutGameDifficulty = ArSaveGameObject->SavedGameDifficulty;
-
-            Debug::Print(TEXT("Load Sucessed"));
 
             return true;
         }
